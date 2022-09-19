@@ -8,17 +8,22 @@ Vector2 SeparationRule::computeForce(const std::vector<Boid*>& neighborhood, Boi
 
     float desiredDistance = desiredMinimalDistance;
 
-    // todo: implement a force that if neighbor(s) enter the radius, moves the boid away from it/them
     if (!neighborhood.empty()) {
         Vector2 position = boid->getPosition();
         int countCloseFlockmates = 0;
 
+        // Iterates through neighborhood
         for (int i = 0; i < neighborhood.size(); i++)
         {
             float distance = Vector2::getMagnitude(position - neighborhood[i]->getPosition());
 
+            // Checks if neighbor boid is within the desired distance of the current boid
             if (distance < desiredDistance)
             {
+                // Calculates the inverse of the the difference and distance between the two boids
+                // to get the force needed to push the current boid away.
+                // This is then added to separatingForce to manage the sum of all forces being
+                // applied to the boid for this frame.
                 Vector2 difference = position - neighborhood[i]->getPosition();
                 separatingForce += difference / distance;
 
@@ -26,6 +31,8 @@ Vector2 SeparationRule::computeForce(const std::vector<Boid*>& neighborhood, Boi
             }
         }
         
+        // If there were other boids in range, divides the separatingForce sum
+        // to get the average force needed to push the boid away from its neighbors.
         if (countCloseFlockmates > 0)
         {
             separatingForce /= countCloseFlockmates;

@@ -4,11 +4,11 @@
 #include "../gameobjects/World.h"
 
 Vector2 WindRule::computeForce(const std::vector<Boid*>& neighborhood, Boid* boid) {
-    // todo: add a wind force here
-    // hint: use the windAngle variable
 
     Vector2 newVelocity = Vector2::zero();
 
+    // Calculates the direction the boid will be
+    // moved in through use of the wind angle
     newVelocity.x = cos(windAngle);
     newVelocity.y = sin(windAngle);
 
